@@ -4,6 +4,7 @@ resource "aws_instance" "app" {
   subnet_id = aws_subnet.private.id
   vpc_security_group_ids = [aws_security_group.app.id]
   key_name = "DemoKeyPair"
+  associate_public_ip_address = true 
 
   tags = {
     Name = "app-server"

@@ -1,20 +1,20 @@
 # Terraform
-*.tfstate
-*.tfstate.*
-.terraform/
-.terraform.lock.hcl
-terraform.tfvars
-crash.log
-crash.*.log
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/terraform.tfvars
+terraform/crash.log
+terraform/crash.*.log
 
 # Ansible
-inventory.ini
-inventory_generated.ini
-*.retry
+ansible/inventory.ini
+ansible/inventory_generated.ini
+ansible/*.retry
 
 # Secrets / keys
 *.pem
-secrets.yml
+*.key
 
 # OS/editor cruft
 .DS_Store

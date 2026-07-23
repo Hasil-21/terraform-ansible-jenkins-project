@@ -45,3 +45,11 @@ output "alb_dns_name"{
 output "app_instance_private_ip"{
   value = aws_instance.app.private_ip
 }
+
+output "jenkins_instance_private_ip"{
+  value = aws_instance.jenkins-controller.private_ip
+}
+
+output "jenkins_instance_id"{
+  value = aws_instance.jenkins-controller.id
+}

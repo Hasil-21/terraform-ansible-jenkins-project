@@ -1,0 +1,12 @@
+---
+- name: Deploy web app
+  hosts: app
+  become: true
+  roles:
+    -  webapp
+
+- name: Deploy jenkins controller
+  hosts: jenkins
+  become: true
+  roles:
+    -  jenkins-controller

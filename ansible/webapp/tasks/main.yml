@@ -1,0 +1,29 @@
+---
+- name: Update cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Create nginx web app
+  copy:
+    content: |
+      <html>
+        <head><title>This is a dummy application</title><head>
+        <body>
+          <h4>This is a test application web page for nginx</h4>
+          <p> testing p tag</p>
+        </body>
+      </html>
+    dest: var/www/html/index.html
+  notify: Restart nginx
+
+- name: Check nginx status
+  service:
+    name: nginx
+    state: started
+    enabled: yes

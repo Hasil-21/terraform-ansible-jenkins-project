@@ -1,0 +1,79 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+
+- name: Install required packages
+  apt:
+    name:
+      - fontconfig
+      - openjdk-21-jre
+      - gnupg
+      - ansible
+      - git
+      - unzip
+    state: present
+
+
+- name: Get Ubuntu release codename
+  command: lsb_release -cs
+  register: ubuntu_codename
+  changed_when: false
+
+
+- name: Download jenkins GPG key
+  get_url:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+    dest: /tmp/jenkins-keyring.asc
+    mode: '0644'
+
+
+- name: Dearmor GPG jenkins key
+  shell: gpg --dearmor -o /usr/share/keyrings/jenkins-keyring.asc /tmp/jenkins.key
+  args:
+    creates: /usr/share/keyrings/jenkins-keyring.asc
+
+
+- name: Add Jenkins apt repository
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
+    filename: jenkins
+    state: present
+
+
+- name: Add hashicorp GPG key
+  get_url:
+    url: https://apt.releases.hashicorp.com/gpg
+    dest: /tmp/hashicorp.gpg
+    mode: '0644'
+
+
+- name: Dearmor GPG key
+  shell: gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg /tmp/hashicorp.gpg
+  args:
+    creates: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+
+- name: Add HashiCorp apt repository
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ubuntu_codename.stdout }} main"
+    filename: hashicorp
+    state: present
+
+
+- name: Update apt cache after adding jenkins repo
+  apt:
+    update_cache: yes
+
+
+- name: Install jenkins
+  apt:
+    name: jenkins
+    state: present
+
+- name: Install terraform
+  apt:
+    name: terraform
+    state: present
