@@ -19,7 +19,7 @@
           <p> testing p tag</p>
         </body>
       </html>
-    dest: var/www/html/index.html
+    dest: /var/www/html/index.html
   notify: Restart nginx
 
 - name: Check nginx status
